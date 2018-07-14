@@ -10,12 +10,23 @@ import UIKit
 
 class TodoListVC: UITableViewController {
 
-    let itemArray = ["Find Mike", "Buy Eggos", "Destroy Deamgorgon"]
+    var itemArray = ["Find Mike", "Buy Eggos", "Destroy Deamgorgon"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
         
-        
+        if let items = defaults.array(forKey: "items") as? [String] {
+            
+            itemArray = items
+            
+        }
+    }
+    
+    override func didMove(toParentViewController parent: UIViewController?) {
+        super.didMove(toParentViewController: parent)
+        print("didMove")
     }
     
     
@@ -53,6 +64,43 @@ class TodoListVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
 
     }
+    
+    //MARK: - Add new items
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var alertTextfield = UITextField()
+        let alert = UIAlertController(title: "Add new item", message: "", preferredStyle: .alert)
+        alert.addTextField(configurationHandler: { (textfield) in
+            
+            textfield.placeholder = "Enter you item here"
+            alertTextfield = textfield
+            
+        })
+        
+        let action = UIAlertAction(title: "Add Item", style: .default, handler: {action in
+            
+            if let newItemText = alert.textFields?.first?.text {
+                
+                self.itemArray.append(newItemText)
+                self.defaults.set(self.itemArray, forKey: "items")
+                self.tableView.reloadData()
+                
+            }
+            
+        })
+        
+        alert.addAction(action)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: {(alert) in
+            
+            
+            
+            })
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
     
 }
 
