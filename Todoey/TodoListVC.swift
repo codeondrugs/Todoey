@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  Todoey
-//
-//  Created by EasyRider on 13.07.2018.
-//  Copyright © 2018 Artem Yelizarov. All rights reserved.
-//
-
 import UIKit
 
 class TodoListVC: UITableViewController {
